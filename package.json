@@ -4,5 +4,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "csv-stringify": "^4.3.1"
+  }
 }
