@@ -4,15 +4,15 @@ const fs = require('fs')
 const PDFDocument = require('pdfkit')
 
 const doc = new PDFDocument({autoFirstPage: false})
-doc.pipe(fs.createWriteStream('ouput.pdf'))
+doc.pipe(fs.createWriteStream('yancy-camp.pdf'))
 
 let content = ''
 let scrapedData = []
-const firstWorkout = 500
-const lastWorkout = 503
+const firstWorkout = 179
+const lastWorkout = 527
 
 const printFiles = (pdfObj, string) => {
-  fs.writeFileSync('list.text', string, 'utf8')
+  fs.writeFile('yancy-camp.text', string, 'utf8')
   for (let j = 0; j < pdfObj.length; j++) {
     doc.addPage()
       .fontSize(18)
@@ -36,7 +36,8 @@ const makeCalls = (first, last, total, next) => {
   const workoutNum = next || first
   let count = total || 0
   const pages = last - first
-  const scrapeLocation = `http://www.yancycamp.com/allison-tai/yancy-camp-workout-${workoutNum}/`
+  const scrapeLocation = workoutNum === 204 ? 'http://www.yancycamp.com/allison-tai/ocr-trial-results-and-yancy-camp-scoreboards/'
+    : `http://www.yancycamp.com/allison-tai/yancy-camp-workout-${workoutNum}/`
   const options = {
     uri: scrapeLocation,
     transform: function (body) {
