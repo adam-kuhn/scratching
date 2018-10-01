@@ -67,8 +67,8 @@ const makeCalls = (first, last, total, next) => {
       content += workoutName + '\n\n' + introText + '\n\n' + workoutDesc + '\n\n'
       const nextWorkout = workoutNum + 1
       count++
-      if (count === pages) {
-        checkComplete()
+      if (count === pages + 1) {
+        printFiles(scrapedData, content)
       } else {
         makeCalls(first, last, count, nextWorkout)
       }
@@ -76,12 +76,6 @@ const makeCalls = (first, last, total, next) => {
     .catch(err => {
       console.error(err)
     })
-}
-
-const checkComplete = () => {
-  if (scrapedData.length === 3) {
-    printFiles(scrapedData, content)
-  }
 }
 
 makeCalls(firstWorkout, lastWorkout)
