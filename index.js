@@ -8,42 +8,27 @@ doc.pipe(fs.createWriteStream('yancy-camp.pdf'))
 
 let content = ''
 let scrapedData = []
+// enter the first workout you would like to download -> currently there are no workouts below 179 on the yancy camp website
 const firstWorkout = 179
+// enter the last workout you would like to download
 const lastWorkout = 527
-
-const printFiles = (pdfObj, string) => {
-  fs.writeFile('yancy-camp.text', string, 'utf8')
-  for (let j = 0; j < pdfObj.length; j++) {
-    doc.addPage()
-      .fontSize(18)
-      .text(pdfObj[j].workoutName, {underline: true})
-      .moveDown()
-      .fontSize(12)
-      .fillColor('grey')
-      .text(pdfObj[j].introText)
-      .moveDown()
-      .fillColor('black')
-      .text(pdfObj[j].workoutDesc)
-      .moveDown()
-      .moveTo(doc.x, doc.y)
-      .lineTo(doc.x + 400, doc.y)
-      .stroke()
-  }
-  doc.end()
-}
 
 const makeCalls = (first, last, total, next) => {
   const workoutNum = next || first
   let count = total || 0
   const pages = last - first
-  const scrapeLocation = workoutNum === 204 ? 'http://www.yancycamp.com/allison-tai/ocr-trial-results-and-yancy-camp-scoreboards/'
-    : `http://www.yancycamp.com/allison-tai/yancy-camp-workout-${workoutNum}/`
+  // replace athleteFirst-athleteLast with the first and last names of your membership
+  // for example allison-tai or rea-kolbl
+  const scrapeLocation = workoutNum === 204 ? 'http://www.yancycamp.com/athleteFirst-athleteLast/ocr-trial-results-and-yancy-camp-scoreboards/'
+    : `http://www.yancycamp.com/athleteFirst-athleteLast/yancy-camp-workout-${workoutNum}/`
   const options = {
     uri: scrapeLocation,
     transform: function (body) {
       return cheerio.load(body)
     },
     headers: {'content-type': 'application/x-www-form-urlencoded'},
+    // replace USERNAME with your username
+    // replace PASSWORD with your password -> you may have to change your password to have no special characters
     body: 'login_user_name=USERNAME&login_pwd=PASSWORD&Submit=doLogin'
   }
   rp.post(options)
@@ -77,6 +62,27 @@ const makeCalls = (first, last, total, next) => {
     .catch(err => {
       console.error(err)
     })
+}
+
+const printFiles = (pdfObj, string) => {
+  fs.writeFile('yancy-camp.text', string, 'utf8')
+  for (let j = 0; j < pdfObj.length; j++) {
+    doc.addPage()
+      .fontSize(18)
+      .text(pdfObj[j].workoutName, {underline: true})
+      .moveDown()
+      .fontSize(12)
+      .fillColor('grey')
+      .text(pdfObj[j].introText)
+      .moveDown()
+      .fillColor('black')
+      .text(pdfObj[j].workoutDesc)
+      .moveDown()
+      .moveTo(doc.x, doc.y)
+      .lineTo(doc.x + 400, doc.y)
+      .stroke()
+  }
+  doc.end()
 }
 
 makeCalls(firstWorkout, lastWorkout)
