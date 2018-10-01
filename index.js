@@ -16,7 +16,7 @@ const options = {
     return cheerio.load(body)
   },
   headers: {'content-type': 'application/x-www-form-urlencoded'},
-  body: 'login_user_name=USERNAME&login_pwd=PASSWORD&Submit=doLogin'
+  body: 'login_user_name=USERNAMEW&login_pwd=PASSWORD&Submit=doLogin'
 }
 
 rp.post(options)
@@ -35,14 +35,20 @@ rp.post(options)
     content += workoutName + '\n\n' + introText + '\n\n' + workoutDesc + '\n\n'
     createCsv()
     doc.addPage()
-    doc.fontSize(18)
-    doc.text(workoutName, {underline: true})
-    doc.moveDown()
-    doc.fontSize(12)
-    doc.text(introText)
-    doc.moveDown()
-    doc.text(workoutDesc)
-    doc.end()
+      .fontSize(18)
+      .text(workoutName, {underline: true})
+      .moveDown()
+      .fontSize(12)
+      .fillColor('grey')
+      .text(introText)
+      .moveDown()
+      .fillColor('black')
+      .text(workoutDesc)
+      .moveDown()
+      .moveTo(doc.x, doc.y)
+      .lineTo(doc.x + 400, doc.y)
+      .stroke()
+      .end()
   })
   .catch(err => {
     console.error(err)
