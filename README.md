@@ -1,8 +1,8 @@
-#Yancy Camp - Web Scraper
+# Yancy Camp - Web Scraper
 For anyone who wants to have a personal copy of the Yancy Camp workouts. This script will access as little or as many Yancy Camp workouts you wish to have. The workouts are output in both a .text and .pdf file.
 This script was built to allow users access old/favorite Yancy Camp workouts when out travelling or off training and do not have access to wifi.
 
-##Set Up
+## Set Up
  - Clone this repo to your machine
  - run the command `npm install`
  - Open the **index.js** and adjust the following
