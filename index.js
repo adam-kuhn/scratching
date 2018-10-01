@@ -1,8 +1,12 @@
 const rp = require('request-promise')
 const cheerio = require('cheerio')
 const fs = require('fs')
+const PDFDocument = require('pdfkit')
 
-let wodNum = 444
+const doc = new PDFDocument({autoFirstPage: false})
+doc.pipe(fs.createWriteStream('ouput.pdf'))
+
+let wodNum = 500
 let scrapeLocation = `http://www.yancycamp.com/allison-tai/yancy-camp-workout-${wodNum}/`
 let content = ''
 
@@ -30,6 +34,15 @@ rp.post(options)
     const workoutDesc = message.slice(endOfIntro)
     content += workoutName + '\n\n' + introText + '\n\n' + workoutDesc + '\n\n'
     createCsv()
+    doc.addPage()
+    doc.fontSize(18)
+    doc.text(workoutName, {underline: true})
+    doc.moveDown()
+    doc.fontSize(12)
+    doc.text(introText)
+    doc.moveDown()
+    doc.text(workoutDesc)
+    doc.end()
   })
   .catch(err => {
     console.error(err)
